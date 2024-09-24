@@ -97,6 +97,8 @@
     <h2>Table of Contents</h2>
     <ol>
         <li><a href="#project-overview">Project Overview</a></li>
+        <li><a href="#cicd-strategy">CI/CD Strategy</a></li>
+        <li><a href="#relevant-options">Relevant Options</a></li>
         <li><a href="#repositories-breakdown">Repositories Breakdown</a>
             <ul>
                 <li><a href="#s3-storage">S3 Storage</a></li>
@@ -109,7 +111,6 @@
         <li><a href="#ci-cd-pipeline">CI/CD Pipeline</a></li>
         <li><a href="#infrastructure-as-code-iac">Infrastructure as Code (IaC)</a></li>
         <li><a href="#deployment-instructions">Deployment Instructions</a></li>
-        <li><a href="#technical-choices">Technical Choices</a></li>
     </ol>
 
     <hr>
@@ -120,6 +121,20 @@
     <div class="image-container">
         <img src="Diagram.jpeg" alt="Diagram">
     </div>
+    <hr>
+
+    <h2 id="cicd-strategy">CI/CD Strategy</h2>
+    <p>My approach to implementing a CI/CD strategy involves separating infrastructure components that can be reused across different parts of the solution, such as S3, API Gateway, DynamoDB, ECS clusters, and ELBs. This separation is crucial to avoid the need for deploying multiple artifacts every time a change is made in a single repository. During my previous experience at Itaú, I utilized this practice to promote more efficient repository management.</p>
+    <p>For components with a specific business function—such as Lambdas, ECS tasks, or static websites (for example, Angular applications hosted on S3)—I would consolidate these elements into a single repository. This repository would include not only the infrastructure related to the artifact but also complementary resources like roles, policies, and EventBridge, organized by business function. This approach allows all necessary resources for evolving a single deployment to be managed cohesively.</p>
+    <p>Although I haven't implemented this practice in the current example, I would include jobs for unit testing, code analysis using tools like SonarQube and Fortify, as well as automating ticket creation in ServiceNow to document changes in production. This ensures that changes are thoroughly tested and validated before deployment.</p>
+    <hr>
+
+    <h2 id="relevant-options">Relevant Options</h2>
+    <p>In developing this assignment, I first adopted GitHub as my version control system, recognizing it as a market trend. I have witnessed companies migrating from Azure DevOps to GitHub and have participated in transitioning from Jenkins, GitLab, and CodePipeline to GitHub. This experience reinforced my belief in GitHub's growing dominance in the industry.</p>
+    <p>I also favor Terraform for its cross-platform capabilities and rich ecosystem supported by the community. Its flexibility and widespread adoption make it an excellent choice for infrastructure as code projects, although I remain open to exploring new IaC languages that may emerge.</p>
+    <p>For managing HTTP endpoints, I appreciate using API Gateway, as it allows for the simultaneous management of multiple versions. This makes it a perfect companion for AWS Lambda. Even though my example does not isolate the Lambda function within a VPC, the API Gateway serves as a single point of interaction, streamlining the communication process.</p>
+    <p>Regarding AWS Lambda, I prefer interpreted languages such as Python. Despite my limited experience as a Python developer, I have consistently recommended either Python or JavaScript in projects where I have acted as an architect, specialist, or tech lead. These languages offer robust support for serverless applications.</p>
+    <p>Lastly, I view Amazon EventBridge as a valuable asset in my development toolkit. Its low-cost nature and ease of integration with AWS projects significantly enhance the system's capabilities.</p>
     <hr>
 
     <h2 id="repositories-breakdown">Repositories Breakdown</h2>
@@ -234,19 +249,5 @@
     </ol>
     
     <hr>
-    
-    <h2 id="technical-choices">Technical Choices</h2>
-    
-    <h3>Why AWS?</h3>
-    <p>AWS was chosen for its extensive serverless offerings, such as Lambda, DynamoDB, and S3, which allow for scalable and cost-effective solutions that fit within the Free Tier.</p>
-    
-    <h3>Why Terraform and CloudFormation?</h3>
-    <p>These IaC tools provide flexibility in managing infrastructure. Terraform is used for S3 due to its multi-cloud capabilities, while CloudFormation is AWS-native and fits well with DynamoDB provisioning.</p>
-    
-    <h3>Why CDK and SAM?</h3>
-    <p>AWS CDK with Python offers a programmatic way to define infrastructure, which is easier to manage for complex setups like API Gateway. AWS SAM is excellent for Lambda-based applications, offering a simplified way to manage serverless functions and event-driven architectures.</p>
-    
-    <h3>Why GitHub Actions?</h3>
-    <p>GitHub Actions allows for automated deployment pipelines, reducing manual intervention and ensuring that the code is always deployed in a consistent, secure manner using OIDC for role assumption.</p>
 </body>
 </html>
